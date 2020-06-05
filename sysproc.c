@@ -13,6 +13,7 @@ sys_fork(void)
   return fork();
 }
 
+
 int
 sys_exit(void)
 {
@@ -88,4 +89,14 @@ sys_uptime(void)
   xticks = ticks;
   release(&tickslock);
   return xticks;
+}
+
+int
+sys_procls(void)
+{
+  struct proc_info *pi_list;
+  argptr(0, (void*)&pi_list, sizeof(pi_list));
+  int count = proclistret(pi_list);
+  return count;  
+  
 }

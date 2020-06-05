@@ -532,3 +532,41 @@ procdump(void)
     cprintf("\n");
   }
 }
+
+int
+proclistret(struct proc_info *pi_list)
+{
+
+  acquire(&ptable.lock);
+  
+  struct proc *p;
+
+  int i = 0;
+
+  for(p = ptable.proc; p < &ptable.proc[NPROC]; p++)
+  {
+    if(p->state == RUNNING || p->state == RUNNABLE)
+    {
+      (pi_list + i)->pid = p->pid;
+      (pi_list + i)->memsize = p->sz;
+      i++;
+    }
+  }
+  release(&ptable.lock);
+
+  for(int j = 0 ; j < i ; j++)
+  {
+    for(int k = 0 ; k < i ; k++)
+    {
+      if((pi_list + j) -> memsize > (pi_list + k) -> memsize)
+      {
+        struct proc_info tmp = *(pi_list + j);
+        *(pi_list + j) = *(pi_list + k);
+        *(pi_list + k) = tmp;
+      }
+    }
+  }
+
+  return i;
+
+}

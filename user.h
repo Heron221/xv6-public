@@ -24,6 +24,10 @@ char* sbrk(int);
 int sleep(int);
 int uptime(void);
 
+//my syscall
+int waitx(int *wtime , int *rtime );
+int set_priority(int new_prioity);
+
 // ulib.c
 int stat(const char*, struct stat*);
 char* strcpy(char*, const char*);
